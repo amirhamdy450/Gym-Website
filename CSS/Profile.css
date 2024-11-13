@@ -1,0 +1,279 @@
+
+    /* Profile */
+    .profile {
+    margin-top: 80px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 80px auto 0;
+    }
+    
+    .profile h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    }
+    
+    .profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    }
+    
+    .profile-info #choose{
+      opacity: 0 ;
+      transform: scale(11);
+    }
+
+    .profile-picture-wrapper {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+    }
+    
+    #profile-picture-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity .1s ease-in-out;
+
+    }
+
+    .pic-change {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 112px;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      opacity: 0;  /* will make it hidden & invisible until hover */
+      transition: opacity .1s ease-in-out;
+      margin: 200px 580px 200px 580px;
+    }
+     
+    .caption {
+      text-transform: uppercase;
+      font-size: 12px;
+      width: 50%;
+      text-align: center;
+      color: black;
+    }
+
+     /* hover effect for the pic change animated effect */
+    .profile-picture-wrapper:hover .pic-change {
+      opacity: 1;    /* this will show this hidden class when hover effect is on */
+    } 
+    .profile-picture-wrapper:hover #profile-picture-img{
+      opacity: .4;    /* this will dim the profile pic that is about to be changed */
+    }
+
+  
+
+
+    .user-details {
+    text-align: center;
+    }
+    
+    .user-details h2 {
+    margin-bottom: 10px;
+    text-transform: capitalize;
+    }
+    
+    .user-details p {
+    margin-bottom: 5px;
+    }
+    
+    .form-group {
+    margin-bottom: 15px;
+    width: 100%;
+    }
+    
+    .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: center;
+    }
+    
+    .form-group p{
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    width: 100%;
+    margin-right: 10px;
+    text-align: center;
+    }
+    
+    .membership-level {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #fff;
+        color: #333;
+        cursor: pointer;
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 300px;
+        display: inline-block;
+        text-align: center;
+      }
+      
+      .membership-level:hover {
+        background-color: #f2f2f2;
+      }
+      
+      .membership-level p {
+        text-transform: uppercase;
+
+      }
+
+      .change-plan {
+        margin:15px;
+      }
+
+      .change-plan button{
+      padding:5px;
+      }
+      
+    
+
+hr {
+ border: none;
+ height: 1px;
+background-color: #ccc;
+margin: 20px 0;
+}
+      
+    .password-change {
+    margin-top: 57px;
+    text-align: left;
+    }
+    
+    .password-change h3 {
+    margin-bottom: 5px;
+    }
+    
+    form .form-group input[type="password"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    width: 100%;
+    margin-right: 10px;
+    margin-bottom: 8px;
+    }
+    
+    .btn-change-password, .btn-save-changes {
+    background-color: #f00;
+    color: #fff;
+    padding: 10px 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px auto;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    box-sizing: border-box;
+    }
+    
+    .btn-change-password:hover, .btn-save-changes:hover {
+    background-color: #d00;
+    }
+    
+   /* image manager window */
+   .img_manager {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: #fff;
+    border: 2px solid #000;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    height: 500px;
+    align-items: flex-start;
+}
+   
+    
+   .container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    max-height: 400px;
+
+   }
+
+   .container img {
+     object-fit: contain;
+     width: auto;
+     height: auto;
+     max-width: 100%;
+     max-height: 100%;
+   }
+   
+
+   .confirmation {
+    padding: 10px 30px 0px 65px;
+    flex-direction: row;
+    display: flex;
+    margin: 10px;
+}
+
+   #cf {
+      background-color: #f00;
+      color: #fff;
+      padding: 10px 10px;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+      max-width: 100px;
+      box-sizing: border-box;
+  }
+  
+  .confirmation button{
+    
+      background-color: #000000;
+      color: #fff;
+      padding: 10px 27px;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+      max-width: 100px;
+      box-sizing: border-box;
+      margin-right: 150px;
+  
+  }
+
+    /* Footer */
+    footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+    }
