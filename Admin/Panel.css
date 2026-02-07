@@ -1,4 +1,4 @@
-body{
+/* body{
     background:#adadad;
   }
 
@@ -76,7 +76,6 @@ table, tr, td, th {
     margin-top: 16px;
     margin-bottom: 20px;
     font-family: Arial, sans-serif;
-    /* Accessible font-size, can be adjusted based on requirement. */
     font-size: 16px;
   }
   
@@ -174,3 +173,4 @@ input[type=file] {
 
 
 
+ */

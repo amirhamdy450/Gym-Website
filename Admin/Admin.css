@@ -1,17 +1,58 @@
 
+/* nav */
 
-
-.Admin h1 {
-	text-align: center;
-	/* border: 3px solid; */
-	padding: 15px 0px;
-	/* background: #d00; */
-	border-radius: -1px;
-	color: white;
-	font-size: 2em;
-	user-select: none;
-	background: linear-gradient(90deg, rgba(120,18,22,1) 0%, rgba(221,0,0,1) 100%);
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  /* border: 3px solid; */
+  padding: 20px 60px;
+  /* background: #d00; */
+  border-radius: -1px;
+  color: white;
+  font-size: 20px;
+  user-select: none;
+  background: linear-gradient(90deg, rgba(120,18,22,1) 0%, rgba(221,0,0,1) 100%);
+  position: relative;
+  height: 80px;
 }
+
+nav .BurgerBtn {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+nav img{
+  width: 40px;
+  height: 40px;
+
+}
+
+
+.NavLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+  top: 80px;
+  right: 0;
+  background-color: #890c0c;
+  color: white;
+  width: 100%;
+  /* border: 2px solid #cc1616; */
+  /* border-radius: 3px; */
+  /* height: 100vh; */
+}
+
+.NavLinks a {
+  padding: 10px 60px;
+  color: white;
+  width: 100%;
+  align-self: flex-start;
+}
+/* header */
 .Admin h2 {
     /* margin: 55px 540px 5px 540px; */
     text-align: center;
@@ -37,22 +78,25 @@
 
 
 .window {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  overflow-y: auto;
+  user-select: none;
 }
-
 
 .window table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  align-self: flex-start;
+  /* margin: 20px; */
+  overflow: scroll;
 }
-
 
 .window table th {
 	border: 1px solid #ccc;
@@ -64,6 +108,7 @@
 	color: white;
 	background: rgb(41,100,135);
 	background: linear-gradient(90deg, rgba(41,100,135,1) 0%, rgba(19,120,181,1) 100%);
+  white-space: nowrap;
 }
 .window table td {
   border: 1px solid #ccc;
@@ -82,12 +127,18 @@
   margin-bottom: 10px;
 }
 
+
 .window tbody td {
   display: table-cell;
-  padding: 8px;
-  vertical-align: top;
+  /* padding: 8px; */
+  padding: 5px 40px;
+  /* vertical-align: top; */
+  white-space: nowrap;
+  width: 100%;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
 .window tbody td:nth-child(odd) {
   font-weight: bold;
   background-color: #f5f5f5;
@@ -109,17 +160,30 @@
 	align-self: flex-start;
 }
   
-  .window a:hover {
-    text-decoration: none;
-    background-color: #cc0000;
-  }
+.window a:hover {
+  text-decoration: none;
+  background-color: #cc0000;
+}
+
+.Actions{
+  display: flex !important;
+  gap: 10px;
+}
+
+.Actions a{
+  cursor: pointer;
+}
 
 
 
   
-  @media only screen and (max-width: 768px) {
-    .window a {
-      display: block; /* change display property for smaller screens */
-      margin-bottom: 5px; /* reduce margin for smaller screens */
-    }
+@media only screen and (max-width: 768px) {
+  .window a {
+    display: block; /* change display property for smaller screens */
+    margin-bottom: 5px; /* reduce margin for smaller screens */
   }
+}
+
+
+
+/* Schedule Viewer */

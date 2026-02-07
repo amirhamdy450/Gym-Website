@@ -6,30 +6,33 @@
   <meta name="google-signin-client_id" content="1007872885686-0vlndmia2pmoub2mn9ov3u0cep98uffs.apps.googleusercontent.com">  
   <title>Login</title>
 
+
+  <link rel="stylesheet" href="/projects/GYM2/CSS/global.css">
+
   <link rel="stylesheet" href="/projects/GYM2/CSS/Login.css">
   <link rel="stylesheet" href="/projects/GYM2/CSS/Error.css">
   <script src="Gbutton.js"></script>     
   <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 
 </head>
-<body>
+<body class="Login">
   <nav>
     <div class="logo">
-      <a href="Home.php">Epix Gym</a>
+      <a href="../index.php">Epix Gym</a>
     </div>
     <ul class="nav-links">
-      <li><a href="Home.php">Home</a></li>
-      <li><a href="Home.php #toplans">Plans</a></li>
-      <li><a href="Home.php #toabout">About Us</a></li>
-      <li><a href="Home.php #tocontact">Contact Us</a></li>
-      <li><a href="Login.php">Login</a></li>
+      <li><a href="../index.php">Home</a></li>
+      <li><a href="../index.php #toplans">Plans</a></li>
+      <li><a href="../index.php #toabout">About Us</a></li>
+      <li><a href="../index.php #tocontact">Contact Us</a></li>
+      <li><a href="">Login</a></li>
      
     </ul>
   </nav>
 
 
 
-  <section class="login">
+  <section class="LoginCont">
 
   <?php if (isset($_GET['error'])) { ?>  <!-- same as the signup.php  logic   -->
 
@@ -51,9 +54,11 @@
 
       </div>
       <div class="form-group">
-        <button type="submit">Login</button>
-        <div  class="g-login" id="gbutton"  data-onsuccess="onSignIn"></div>
-
+        <button type="submit" class="BrandBtn">Login</button>
+        <button type="button" class="BrandBtn Icon Google">
+          <img src="../Imgs/Icons/Google.svg" alt="">
+          Sign in with Google
+        </button>
 
         <div class="signup">
         <span>Don't have an account? <a href="type.php">Sign up</a></span>

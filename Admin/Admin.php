@@ -1,4 +1,55 @@
-<?php include "../Server/DB.php" ?>
+<?php 
+include "../Server/DB.php" ;
+
+function DisplayTable($DB_Table, $Columns, $Type, $EditBtn='none', $DeleteBtn='none', $Join=''){
+    global $pdo; // Assuming $pdo is your PDO database connection
+
+    // Create the SQL query with the specified columns
+    $columnsString = implode(", ", $Columns);
+    $sql = "SELECT id,$columnsString FROM $DB_Table $Join";
+    $stmt = $pdo->prepare($sql);
+    $success = $stmt->execute();
+
+    if (!$success) {
+        die('Error: ' . $stmt->errorInfo()[2]);
+    }
+
+
+
+    if (strtolower($Type) == 'head') {
+        echo '<tr>';
+        foreach ($Columns as $Column) {
+          $ColumnName = strpos($Column, ' AS ') !== false ? explode(' AS ', $Column)[1] : $Column;
+          echo '<th>' . htmlspecialchars($ColumnName) . '</th>';
+        }
+        echo '<th>Actions</th>';
+        echo '</tr>';
+    } elseif (strtolower($Type) == 'body') {
+        $Data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($Data as $Row) {
+            echo '<tr>';
+            foreach ($Columns as $Column) {
+              $ColumnName = strpos($Column, ' AS ') !== false ? explode(' AS ', $Column)[1] : $Column;
+              echo '<td>' . htmlspecialchars($Row[$ColumnName]) . '</td>';
+          }
+            if ($EditBtn != 'none' || $DeleteBtn != 'none') {
+                echo '<td class="Actions">';
+                if ($EditBtn != 'none') {
+                    echo '<a class="'.$EditBtn.'" rid="'.$Row['id'].'">Edit</a>';
+                }
+                if ($DeleteBtn != 'none') {
+                    echo '<a class="'.$DeleteBtn.'" rid="'.$Row['id'].'">Remove</a>';
+                }
+                echo '</td>';
+            }
+            echo '</tr>';
+        }
+    }
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html>
 
@@ -11,7 +62,12 @@
 </head>
 
 <body class="Admin">
-<h1>Admin Dashboard</h1>
+  <nav>
+    <h1>Admin Dashboard</h1>
+    <div class="BurgerBtn">
+      <img src="../Imgs/Icons/BurgertBtn.svg" alt="">
+    </div>
+  </nav>
 
   <div class="AdminWindowsCont">
 
@@ -21,51 +77,13 @@
       <a href="instructors.php?action=add&id=0" class="AddBtn">Add Instructor</a>
       <table>
         <thead>
-          <tr>
-            <?php
-            $sql = 'SELECT * FROM instructor';
-            $stmt = $pdo->prepare($sql);
-            $success = $stmt->execute();
+             <?php 
+              $Columns=["Name", "City", "Nationality", "Email","Salary","Emp_Date AS EmploymentDate"];
 
-            if (!$success) {
-              die('Error: ' . $stmt->errorInfo()[2]);
-            }
-
-            $ColumnNames = array_keys($stmt->fetch(PDO::FETCH_ASSOC));
-
-            // Display column headers
-            foreach ($ColumnNames as $ColumnName) {
-              if (strtolower($ColumnName) !== 'id') {
-                echo '<th>' . htmlspecialchars($ColumnName) . '</th>';
-              }
-            }
-            ?>
-            <th>Actions</th>
-          </tr>
+             DisplayTable("instructor",$Columns,"head"); ?>
         </thead>
         <tbody>
-          <?php
-          // Fetch all records
-          $instructors = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-          // For each instructor
-          foreach ($instructors as $ins) { ?>
-            <tr>
-              <?php
-              // Display each column value
-              foreach ($ColumnNames as $ColumnName) {
-                if (strtolower($ColumnName) !== 'id') {
-                  echo '<td>' . htmlspecialchars($ins[$ColumnName]) . '</td>';
-                }
-              }
-              ?>
-              <td>
-                <a href="instructors.php?action=edit&id=<?php echo htmlspecialchars($ins['id']); ?>">Edit</a>
-                <a href="instructors.php?action=delete&id=<?php echo htmlspecialchars($ins['id']); ?>"
-                  onclick="return confirm('Are you sure you want to delete this instructor?') ? window.location.href = this.href : false;">Remove</a>
-              </td>
-            </tr>
-          <?php } ?>
+          <?php DisplayTable("instructor",$Columns,"body","EditInstructorBtn","DeleteInstructorBtn"); ?>
         </tbody>
       </table>
     </div>
@@ -76,66 +94,10 @@
       <a class="AddBtn" href="trainee.php?action=add&id=0">Add Trainee</a>
       <table>
         <thead>
-          <tr>
-            <?php
-            $sql = 'SELECT * FROM trainee';
-            $stmt = $pdo->prepare($sql);
-            $success = $stmt->execute();
-            if (!$success) {
-
-              die('Error: ' . $stmt->errorInfo()[2]);
-            }
-
-
-
-            $ColumnNames = array_keys($stmt->fetch(PDO::FETCH_ASSOC));
-
-            // Display column headers
-            foreach ($ColumnNames as $ColumnName) {
-              if (strtolower($ColumnName) !== 'id') {
-                echo '<th>' . htmlspecialchars($ColumnName) . '</th>';
-              }
-            }
-            ?>
-            <!--           <th>Name</th>
-            <th>Email</th>
-            <th>BirthDate</th>
-            <th>Gender</th>
-            <th>Date Joined</th>
-            <th>Membership Level</th> -->
-            <th>Actions</th>
-          </tr>
+          <?php DisplayTable("trainee",["Tr_Name", "Email", "Birth_Date", "Gender", "DateJoined", "Membership_Level"],"head"); ?>
         </thead>
         <tbody>
-          <?php
-
-          $sql = "SELECT * FROM trainee";
-          $result = mysqli_query($con, $sql);
-
-          // Check if the query was successful
-          if (!$result) {
-            die('Error: ' . mysqli_error($con));
-          }
-
-          // Store the data in the $trainees variable
-          $trainees = mysqli_fetch_all($result, MYSQLI_ASSOC);
-          ?>
-
-          <?php foreach ($trainees as $trainee): ?>
-            <tr>
-              <td><?php echo $trainee['Tr_Name']; ?></td>
-              <td><?php echo $trainee['Email']; ?></td>
-              <td><?php echo $trainee['Birth_Date']; ?></td>
-              <td><?php echo $trainee['Gender']; ?></td>
-              <td><?php echo $trainee['DateJoined']; ?></td>
-              <td><?php echo $trainee['Membership_Level']; ?></td>
-
-              <td>
-                <a href="trainee.php?action=edit&id=<?php echo $trainee['Tr_ID']; ?>">Edit</a>
-                <a href="trainee.php?action=delete&id=<?php echo $trainee['Tr_ID']; ?>" onclick="return confirm('Are you sure you want to delete this trainee?') ? window.location.href = this.href : false;">Remove</a>
-              </td>
-            </tr>
-          <?php endforeach; ?>
+          <?php DisplayTable("trainee",["Tr_Name", "Email", "Birth_Date", "Gender", "DateJoined", "Membership_Level"],"body","EditTraineeBtn","DeleteTraineeBtn"); ?>
         </tbody>
       </table>
     </div>
