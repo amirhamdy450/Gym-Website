@@ -1,0 +1,471 @@
+/* css/tour.css */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap');
+
+:root {
+    --primary: #FF0055;
+    --dark-bg: #0a0a0a;
+    --glass: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+body.TourBody {
+    margin: 0;
+    padding: 0;
+    font-family: 'Outfit', sans-serif;
+    background-color: #050505;
+    background-image:
+        linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0.8) 100%),
+        url('../imgs/tour-bg-generated.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Layout Grid */
+.TourPageWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1300px;
+    padding: 2rem 4rem;
+    gap: 2rem;
+    align-items: center;
+    justify-content: space-between;
+    flex-grow: 1;
+    /* Take remaining height */
+    margin-top: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .TourPageWrapper {
+        flex-direction: row;
+        align-items: center;
+        /* Center vertically */
+        height: auto;
+        min-height: 80vh;
+    }
+}
+
+/* Left Content */
+.TourContent {
+    max-width: 600px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.TourContent h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+.TourContent h1 .Highlight {
+    color: var(--primary);
+}
+
+.TourContent p {
+    font-size: 1.1rem;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+}
+
+.BenefitsList {
+    display: flex;
+    gap: 2rem;
+}
+
+.BenefitItem {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1rem;
+    color: #ddd;
+    font-weight: 500;
+}
+
+.BenefitItem i {
+    color: var(--primary);
+    font-size: 1.2rem;
+    background: rgba(255, 0, 85, 0.2);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.8rem;
+}
+
+/* Moved Back Button */
+.BtnBackContent {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 3rem;
+    color: #888;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+}
+
+.BtnBackContent:hover {
+    color: white;
+    border-color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Right Form */
+.TourFormContainer {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Success Components */
+.SuccessTitle {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.SuccessText {
+    color: #ccc;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.FeatureGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.FeatureGridItem {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+.FeatureGridItem i {
+    font-size: 1.5rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+.FeatureGridItem div {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: white;
+}
+
+.OfferCard {
+    background: linear-gradient(135deg, rgba(255, 0, 85, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+    border: 1px solid var(--primary);
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-align: left;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.OfferCard .Tag {
+    color: var(--primary);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.OfferCard h3 {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+    color: white;
+}
+
+.OfferCard p {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin: 0;
+}
+
+.OfferArrow {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+}
+
+.ActionButtons {
+    display: flex;
+    gap: 1rem;
+}
+
+.BtnHome {
+    text-decoration: none;
+    flex: 1;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.TourFormContainer h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.TourFormContainer .Subtitle {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+/* Form Elements */
+.FormGroup {
+    margin-bottom: 1.2rem;
+    position: relative;
+}
+
+.InputWithIcon {
+    position: relative;
+}
+
+.InputWithIcon i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.InputWithIcon input,
+.InputWithIcon select {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: white;
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.InputWithIcon select option {
+    background: #1a1a1a;
+    color: white;
+}
+
+.InputWithIcon input:focus,
+.InputWithIcon select:focus {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Date Picker Pills */
+.SectionLabel {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #888;
+    letter-spacing: 1px;
+    margin-bottom: 0.8rem;
+    display: block;
+    font-weight: 700;
+}
+
+.DateGrid {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    scrollbar-width: none;
+    /* Hide scrollbar Firefox */
+}
+
+.DateGrid::-webkit-scrollbar {
+    display: none;
+}
+
+.DatePill {
+    min-width: 60px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.8rem 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.DatePill span {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #888;
+}
+
+.DatePill strong {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 0.2rem;
+}
+
+.DatePill:hover {
+    border-color: #555;
+}
+
+.DatePill.Selected {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.DatePill.Selected span,
+.DatePill.Selected strong {
+    color: white;
+}
+
+/* Time Grid */
+.TimeGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+}
+
+.TimeSlot {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    /* Pill shape */
+    padding: 0.6rem;
+    text-align: center;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.TimeSlot:hover {
+    border-color: #555;
+}
+
+.TimeSlot.Selected {
+    background: white;
+    color: black;
+    border-color: white;
+    font-weight: 700;
+}
+
+.TimeSlot.Disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    text-decoration: line-through;
+}
+
+/* Submit Button */
+.BtnSubmit {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.BtnSubmit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 0, 85, 0.4);
+}
+
+.LoginHint {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.LoginHint a {
+    color: white;
+    text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Success Card Styles (Shared) */
+.SuccessCard {
+    text-align: center;
+    background: #0f0f0f;
+    border: 1px solid var(--border);
+    padding: 3rem;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.CheckIcon {
+    width: 80px;
+    height: 80px;
+    background: var(--primary);
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    box-shadow: 0 0 30px rgba(255, 0, 85, 0.6);
+}

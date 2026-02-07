@@ -1,0 +1,1014 @@
+/* css/style.css */
+:root {
+    --primary: #FF0055;
+    --dark-bg: #111111;
+    --dark-card: #1A1A1A;
+    --text-white: #FFFFFF;
+    --text-gray: #AAAAAA;
+    --font-main: 'Outfit', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.HeroImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mask-image: linear-gradient(to left, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to left, black 60%, transparent 100%);
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}
+
+body {
+
+    background-color: var(--dark-bg);
+    color: var(--text-white);
+    font-family: var(--font-main);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Utilities */
+.Highlight {
+    color: var(--primary);
+}
+
+.SectionDark {
+    padding: 4rem 2rem;
+}
+
+.FullWidth {
+    width: 100%;
+}
+
+/* Buttons */
+.Btn {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.BtnPrimary {
+    background-color: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
+}
+
+.BtnPrimary:hover {
+    background-color: #d40047;
+    transform: translateY(-2px);
+}
+
+.BtnOutline {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.BtnOutline:hover {
+    border-color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.BtnWhite {
+    background-color: white;
+    color: var(--dark-bg);
+}
+
+.BtnWhite:hover {
+    background-color: #eee;
+}
+
+/* Navbar */
+.Navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 4rem;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.Logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.NavLinks {
+    display: flex;
+    gap: 2rem;
+}
+
+.NavLinks a {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-gray);
+    transition: color 0.3s;
+}
+
+.NavLinks a:hover {
+    color: white;
+}
+
+.NavActions {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Hero */
+.Hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 4rem;
+    background: radial-gradient(circle at 70% 50%, #2a2a2a 0%, var(--dark-bg) 70%);
+    position: relative;
+    overflow: hidden;
+}
+
+.HeroContent {
+    max-width: 600px;
+    z-index: 2;
+}
+
+.Tagline {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.Hero h1 {
+    font-size: 5rem;
+    line-height: 0.9;
+    font-weight: 900;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+}
+
+.OutlineText {
+    color: transparent;
+    -webkit-text-stroke: 1px white;
+}
+
+.Hero p {
+    color: var(--text-gray);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    max-width: 450px;
+}
+
+.HeroButtons {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Memberships */
+.SectionHeader {
+    text-align: left;
+    margin-bottom: 3rem;
+    padding-left: 4rem;
+}
+
+.SectionHeader h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+}
+
+/* Plan Memberships Fixed */
+.PlansGrid {
+    display: flex;
+    gap: 2rem;
+    padding: 0 4rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* Be Responsive */
+}
+
+.PlanCard {
+    background: var(--dark-card);
+    padding: 2.5rem;
+    border-radius: 12px;
+    flex: 1;
+    min-width: 300px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    transition: transform 0.3s;
+    /* Flex for strict spacing */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.PlanCard:hover {
+    transform: translateY(-10px);
+}
+
+.PlanCard.Popular {
+    background: linear-gradient(145deg, #222, #1a1a1a);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.Badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    border-radius: 4px;
+}
+
+.PlanHeader {
+    /* No bottom margin needed because of Gap parent */
+}
+
+.PlanName {
+    display: block;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.PlanNameTitle {
+    font-size: 2rem;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+/* Plan Colors (Title & Sub-label) */
+.PlanCard:nth-child(1) .PlanNameTitle {
+    color: #FF9900;
+}
+
+/* Bronze */
+.PlanCard:nth-child(2) .PlanNameTitle {
+    color: white;
+}
+
+/* Silver */
+.PlanCard:nth-child(3) .PlanNameTitle {
+    color: #FFD700;
+}
+
+/* Gold */
+
+.PlanCard:nth-child(1) .PlanName {
+    color: #cd7f32;
+}
+
+.PlanCard:nth-child(2) .PlanName {
+    color: #c0c0c0;
+}
+
+.PlanCard:nth-child(3) .PlanName {
+    color: #e5e4e2;
+}
+
+.PlanCard.Popular .PlanName {
+    color: white;
+    /* "Most Popular" text */
+}
+
+.PlanPrice {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+}
+
+.Period {
+    font-size: 1rem;
+    color: var(--text-gray);
+    font-weight: 400;
+    margin-left: 0.5rem;
+}
+
+.PlanFeaturesContainer {
+    flex-grow: 1;
+    /* Pushes button down */
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.PlanFeaturesTitle {
+    color: #888;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.PlanFeatures li {
+    margin-bottom: 0.8rem;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+/* Icons */
+.FeatureEnabled::before {
+    content: "✔";
+    color: var(--dark-bg);
+    background: #666;
+    /* Default check */
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+}
+
+.PlanCard.Popular .FeatureEnabled::before {
+    background: white;
+    /* White check for Silver */
+    color: black;
+}
+
+/* Buttons */
+.PlanButton {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 4px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: none;
+    margin-top: auto;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    /* Default (Bronze/Gold) */
+    background: white;
+    color: black;
+}
+
+.PlanButton:hover {
+    background: #ccc;
+}
+
+/* Silver Button - Can be different if needed, or same */
+/* If Silver needs to be different, index.php might need specific class logic or use child selector */
+
+
+.PlanFeatures li::before {
+    content: "•";
+    color: var(--primary);
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+}
+
+/* Community Section (Flexbox Layout) */
+.CommunityHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-left: 4rem;
+}
+
+.CommunityLine {
+    width: 60px;
+    height: 4px;
+    background: var(--primary);
+}
+
+.CommunityTitle {
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 1rem;
+}
+
+.CommunityContent {
+    display: flex;
+    /* Flexbox as requested */
+    flex-wrap: wrap;
+    /* Safety for small screens */
+    gap: 2rem;
+    padding: 0 4rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+/* Column 1: Text & Stats & Iron Paradise */
+.CommunityText {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1.5;
+    /* Approx 42% width */
+    min-width: 300px;
+}
+
+.CommunityText h2 {
+    font-size: 4rem;
+    line-height: 0.9;
+    margin-bottom: 1.5rem;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+}
+
+.Stats {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 2rem;
+}
+
+.StatItem span:first-child {
+    font-size: 2.5rem;
+    font-weight: 900;
+    display: block;
+    line-height: 1;
+}
+
+.StatItem span:nth-child(2) {
+    color: var(--text-gray);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+.StatRating {
+    color: var(--primary) !important;
+}
+
+/* Feature Cards */
+.FeatureCard {
+    background: var(--dark-card);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.FeatureCard .Overlay{
+    padding: 12px 20px;
+}
+
+.FeatureOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    width: 100%;
+    z-index: 2;
+}
+
+.FeatureOverlay h4 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 0.2rem;
+    text-transform: uppercase;
+    font-style: italic;
+}
+
+.FeatureOverlay p {
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.FeatureImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.FeatureCard:hover .FeatureImage {
+    transform: scale(1.05);
+}
+
+/* Specific Card Handling */
+.FeatureCardMain {
+    height: 250px;
+    margin-top: auto;
+}
+
+/* Columns 2 & 3 (Images) - Flexbox Nesting */
+.CommunityImages {
+    display: flex;
+    flex: 2;
+    /* Approx 58% width */
+    gap: 2rem;
+    min-width: 300px;
+}
+
+.ImgCol {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1;
+    /* 1:1 split */
+}
+
+.ImgCol.Padded {
+    padding-top: 4rem;
+}
+
+/* Card Heights */
+.FeatureTall {
+    height: 100%;
+    min-height: 500px;
+}
+
+.FeatureMid {
+    height: 300px;
+}
+
+.FeatureSmall {
+    height: 250px;
+}
+
+/* Base Mobile Menu Icon (Hidden by default) */
+.MenuIcon {
+    display: none;
+    /* Desktop default */
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.Bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+}
+
+/* =========================================
+   FOOTER & FEATURE LISTS (Global)
+   ========================================= */
+footer {
+    padding: 4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 4rem;
+}
+
+.FooterContent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.FooterLinks {
+    display: flex;
+    gap: 4rem;
+}
+
+.LinkCol h4 {
+    margin-bottom: 1.5rem;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.LinkCol a {
+    display: block;
+    margin-bottom: 0.8rem;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
+.Copyright {
+    margin-top: 3rem;
+    font-size: 0.8rem;
+    color: #555;
+    text-transform: uppercase;
+}
+
+/* Member Feature Lists */
+.FeatureEnabled {
+    margin-bottom: 0.8rem;
+    color: white;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.FeatureEnabled::before {
+    content: "✓";
+    color: #FF9900;
+    background: rgba(255, 153, 0, 0.2);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    margin-right: 0.8rem;
+}
+
+.Popular .FeatureEnabled::before {
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.PlanCard:nth-child(3) .FeatureEnabled::before {
+    color: #FFD700;
+    background: rgba(255, 215, 0, 0.2);
+}
+
+.FeatureLocked {
+    margin-bottom: 0.8rem;
+    color: #555;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.FeatureLocked::before {
+    content: "🔒";
+    font-size: 0.7rem;
+    margin-right: 0.8rem;
+    opacity: 0.5;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN RANGES
+   ========================================= */
+
+/* Mobile View (max-width: 480px) */
+@media (max-width: 480px) {
+
+    /* Global Padding Reduction */
+    .Navbar,
+    .Hero,
+    .CommunityContent,
+    .CommunityHeader,
+    .SectionHeader {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+
+
+    /* Less padding for Plans to allow wider cards */
+    .PlansGrid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        width: 100%;
+        gap: 0.5rem;
+        /* Tighter gap for small screens */
+    }
+
+    /* Navbar */
+    .NavLinks,
+    .NavActions {
+        display: none;
+    }
+
+    .MenuIcon {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        /* Fix for horizontal flat line */
+        gap: 5px;
+    }
+
+    /* Global Safety */
+    html,
+    body {
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Hero */
+    .Hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 8rem !important;
+        height: auto;
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+        justify-content: center;
+    }
+
+    .HeroContent {
+        max-width: 100%;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .Hero h1 {
+        font-size: 3rem;
+        /* Smaller title */
+        margin-bottom: 2rem;
+    }
+
+    .HeroButtons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .HeroButtons .Btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .HeroImage {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        opacity: 0.3;
+        pointer-events: none;
+    }
+
+    .HeroImg {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Plans */
+    .SectionHeader h2 {
+        font-size: 2rem;
+    }
+
+    .PlansGrid {
+        gap: 1.5rem;
+        flex-direction: column;
+        /* CRITICAL FIX: Stacks cards vertically */
+    }
+
+    .PlanCard {
+        min-width: 0;
+        width: 100%;
+        padding: 1rem;
+        /* Reduced from 1.5rem for more space */
+    }
+
+    .PlanNameTitle {
+        font-size: 1.8rem;
+    }
+
+    .PlanPrice {
+        font-size: 2.5rem;
+    }
+
+    .PlanCard .PlanFeaturesContainer {
+        gap: 0.3rem;
+    }
+
+    /* Community */
+    .CommunityContent {
+        flex-direction: column;
+        gap: 3rem;
+        overflow: hidden;
+    }
+
+    .CommunityText {
+        padding: 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .CommunityText h2 {
+        font-size: 2rem;
+        word-wrap: break-word;
+    }
+
+    .Stats {
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .CommunityImages {
+        flex-direction: column;
+        width: 100%;
+        gap: 1.5rem;
+    }
+
+    .ImgCol {
+        width: 100%;
+    }
+
+    .FeatureImage {
+        max-width: 100%;
+    }
+
+    .ImgCol.Padded {
+        padding-top: 0;
+    }
+
+    /* Footer */
+    footer {
+        padding: 2rem 1.5rem;
+    }
+
+    .FooterContent {
+        flex-direction: column;
+        gap: 3rem;
+        text-align: center;
+    }
+
+    .FooterLinks {
+        flex-direction: column;
+        gap: 2rem;
+    }
+}
+
+/* Large Mobiles / Tablets (481px - 780px) */
+@media (min-width: 481px) and (max-width: 780px) {
+
+    /* Tighten Navbar for Tablet */
+    .Navbar {
+        padding: 0.8rem 1.5rem !important;
+        justify-content: space-between;
+    }
+
+    .Logo {
+        font-size: 1.2rem;
+    }
+
+    /* Navbar: Treat Tablet like Mobile (Hamburger Only) */
+    .NavLinks,
+    .NavActions {
+        display: none;
+        /* Hide huge buttons and links for cleaner UI */
+    }
+
+    .MenuIcon {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        margin-left: auto;
+        /* Push to right */
+    }
+
+    .Hero h1 {
+        font-size: 3.5rem;
+    }
+
+    /* Stack Hero Buttons to prevent overflow */
+    .HeroButtons {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        max-width: 400px;
+        /* Constrain width */
+        margin: 0 auto;
+    }
+
+    .HeroButtons .Btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Plans */
+    .PlansGrid {
+        flex-direction: column;
+        /* Stack them */
+        align-items: center;
+    }
+
+    .PlanCard {
+        min-width: 0;
+        width: 100%;
+        max-width: 500px;
+        /* Nice readable max width */
+    }
+
+    .PlanCard .PlanFeaturesContainer {
+        gap: 0.6rem;
+    }
+
+    /* Community */
+    .CommunityText h2 {
+        font-size: 3rem;
+    }
+    .CommunityContent {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 0 1.5rem;
+    }
+
+    .CommunityImages {
+        flex-direction: row;
+        /* Side by side images on tablet */
+    }
+
+    
+
+    .FeatureCard{
+        max-width: 370px;
+    }
+
+    .FeatureCard .Overlay {
+        padding: 10px 20px;
+    }
+}
+
+/* Medium Tablets (781px - 1024px) */
+@media (min-width: 781px) and (max-width: 1024px) {
+
+    /* Navbar Optimizations */
+    .Navbar {
+        padding: 1.5rem 2rem;
+        /* Reduce side padding */
+    }
+
+    .NavLinks {
+        gap: 1.2rem;
+        /* Tighter gap */
+    }
+
+    .NavLinks a {
+        font-size: 0.85rem;
+        /* Smaller font */
+    }
+
+    .NavActions {
+        align-items: center;
+        /* Fix abnormal height */
+        gap: 0.8rem;
+    }
+
+    .Btn {
+        padding: 0.6rem 1.2rem;
+        /* Smaller buttons */
+        font-size: 0.85rem;
+    }
+
+    /* Community */
+    .CommunityContent {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .CommunityText {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .CommunityImages {
+        width: 100%;
+        display: flex;
+        /* Ensure row */
+        gap: 1.5rem;
+    }
+
+    /* Plans */
+    .PlansGrid {
+        gap: 1.5rem;
+    }
+
+
+}
+
+/* Large Tablets / Small Desktops (1025px - 1280px) */
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .CommunityContent {
+        padding: 0 2rem;
+        gap: 1rem;
+    }
+
+    .Hero h1 {
+        font-size: 4rem;
+    }
+}
