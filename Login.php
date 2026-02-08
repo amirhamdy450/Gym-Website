@@ -26,7 +26,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($User && password_verify($Password, $User['PasswordHash'])) {
             AuthLogin($User);
-            header("Location: index.php");
+
+            // Redirect based on role
+            if ($User['Role'] === 'Trainee') {
+                header("Location: Pages/Trainee/Dashboard.php");
+            } elseif ($User['Role'] === 'Admin') {
+                header("Location: Pages/Admin/Dashboard.php");
+            } elseif ($User['Role'] === 'Instructor') {
+                header("Location: Pages/Instructor/Dashboard.php");
+            } else {
+                header("Location: index.php");
+            }
             exit;
         } else {
             $Error = "Invalid email or password.";
@@ -36,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,16 +55,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/signup.css">
 </head>
+
 <body class="SignupBody LoginPage">
 
-    <?php 
+    <?php
     $HideNavLinks = true;
-    include 'Includes/NavBar.php'; 
+    include 'Includes/NavBar.php';
     ?>
-    
+
     <div class="LoginWrapper">
         <div class="LoginContainer">
-            
+
             <h2>Welcome Back</h2>
             <p class="SubText">Access your performance dashboard</p>
 
@@ -64,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <form method="POST" action="Login.php">
-                
+
                 <div class="FormGroup">
                     <label for="Email">EMAIL ADDRESS</label>
                     <input type="email" name="email" id="Email" class="InputBox" placeholder="athlete@epixgym.com" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
@@ -111,4 +123,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <script src="js/login.js"></script>
 </body>
+
 </html>

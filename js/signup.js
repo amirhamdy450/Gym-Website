@@ -114,7 +114,11 @@ function ValidateStep1() {
 
     // 4. Gender Validation
     if (!SignupState.Gender) {
-
+        // No input box for gender, so we might use a generic alert or style the labels
+        // For now, let's just alert used as a fallback or style the container
+        // Simple fallback:
+        // AlertError("Please select your gender.");
+        // Better:
         const genderGrid = document.querySelector('.GenderGrid');
         if (!document.querySelector('#GenderError')) {
             const err = document.createElement('span');
