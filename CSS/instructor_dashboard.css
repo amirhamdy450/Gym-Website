@@ -1,0 +1,419 @@
+/* instructor_dashboard.css */
+:root {
+    --bg-dark: #0a0a0a; /* Ultra dark background */
+    --card-bg: #141414; /* Slightly lighter card bg */
+    --accent-red: #ff0055; /* Neon Red */
+    --text-white: #ffffff;
+    --text-grey: #8c8c8c;
+    --border-color: #2a2a2a;
+    --success-green: #00ff88;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    padding-bottom: 50px; /* Space for footer/scroll */
+}
+
+/* --- Layout --- */
+.DashGrid {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr; /* 2/3 Main, 1/3 Side */
+    gap: 25px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 40px;
+}
+
+@media (max-width: 1024px) {
+    .DashGrid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+}
+
+/* --- Header --- */
+.DashHeader {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 40px 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.DashHeader h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.DashHeader .SubText {
+    color: var(--text-grey);
+    margin-top: 5px;
+    font-size: 1rem;
+}
+
+.BtnNewSession {
+    background-color: var(--accent-red);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.BtnNewSession:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
+}
+
+/* --- Cards --- */
+.Card {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 25px;
+}
+
+.CardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.CardTitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.CardTitle i {
+    color: var(--accent-red);
+}
+
+.LinkAction {
+    color: var(--text-grey);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+}
+
+.LinkAction:hover {
+    color: var(--accent-red);
+}
+
+/* --- Timeline (Today's Schedule) --- */
+.TimelineItem {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 25px;
+    border-left: 2px solid var(--border-color);
+}
+
+.TimelineItem:last-child {
+    border-left: none; /* Stop line for last item */
+    padding-left: 32px; /* Adjust for missing border width */
+}
+
+.TimelineDot {
+    width: 12px;
+    height: 12px;
+    background-color: var(--accent-red);
+    border-radius: 50%;
+    position: absolute;
+    left: -7px;
+    top: 5px;
+    box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+}
+
+.TimelineContent {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.TimelineContent:hover {
+    transform: translateX(5px);
+    background-color: #222;
+}
+
+.SessionInfo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.UserAvatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #333;
+}
+
+.SessionDetails h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-white);
+}
+
+.SessionDetails .Meta {
+    color: var(--text-grey);
+    font-size: 0.9rem;
+    margin-top: 4px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.Tag {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.Tag.Private { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+.Tag.Group { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+
+.BtnAction {
+    background-color: var(--accent-red);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.BtnAction:hover {
+    opacity: 0.9;
+}
+
+.BtnGhost {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-grey);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* --- Roster Widget --- */
+.RosterItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.RosterItem:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.RosterUser {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.RosterAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #333;
+}
+
+.RosterInfo h5 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.RosterInfo span {
+    font-size: 0.8rem;
+    color: var(--text-grey);
+}
+
+.LevelBadge {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--accent-red);
+    border-bottom: 2px solid var(--accent-red);
+    padding-bottom: 2px;
+}
+
+/* --- Stats Grid --- */
+.StatsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.StatNumber {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin: 15px 0 5px 0;
+}
+
+.StatLabel {
+    color: var(--text-grey);
+    font-size: 0.9rem;
+}
+
+.ChartBars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 60px;
+    margin-top: 20px;
+}
+
+.Bar {
+    width: 100%;
+    background-color: #333;
+    border-radius: 4px 4px 0 0;
+}
+
+.Bar.Active {
+    background-color: var(--accent-red);
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+}
+
+/* --- Efficiency Widget --- */
+.EffRow {
+    margin-bottom: 20px;
+}
+
+.EffHeader {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: var(--text-grey);
+}
+
+.ProgressBar {
+    height: 6px;
+    background-color: #333;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.ProgressFill {
+    height: 100%;
+    background-color: var(--accent-red);
+    border-radius: 3px;
+}
+
+/* --- Quick Actions (Bottom Right) --- */
+.QuickActionsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.QuickActionCard {
+    background-color: #1e1e1e;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.QuickActionCard:hover {
+    border-color: var(--accent-red);
+}
+
+.QuickActionCard i {
+    font-size: 1.5rem;
+    color: var(--accent-red);
+    margin-bottom: 10px;
+}
+
+.QuickActionCard span {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-white);
+}
+
+/* --- New Widgets --- */
+
+/* Activity Feed */
+
+
+/* Program Performance Widget */
+.ProgramGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.ProgramCard {
+    background-color: #1e1e1e;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.ProgramCard:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-red);
+}
+
+.ProgramCard h4 {
+    margin: 0 0 15px 0;
+    color: var(--text-white);
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ProgramStatRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-grey);
+}
+
+.ProgramStatRow strong {
+    color: var(--text-white);
+}
+

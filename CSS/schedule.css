@@ -1,0 +1,190 @@
+/* css/schedule.css */
+@import url('variables.css');
+
+/* --- LAYOUT --- */
+/* --- LAYOUT --- */
+/* ScheduleContainer removed - using DashboardWrapper */
+
+.ScheduleHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    background: #111;
+}
+
+.MonthSelector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.MonthSelector h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    width: 200px;
+    text-align: center;
+}
+
+.NavBtn {
+    background: rgba(255,255,255,0.05);
+    border: none;
+    color: #888;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.NavBtn:hover {
+    background: #333;
+    color: white;
+}
+
+.BtnToday {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.BtnToday:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* --- CALENDAR GRID --- */
+.CalendarWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.WeekHeader {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 0.5rem;
+}
+
+.WeekDay {
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.5rem;
+}
+
+.CalendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.1); /* Border color between cells */
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.DayCell {
+    background: #0a0a0a;
+    min-height: 140px;
+    padding: 0.8rem;
+    position: relative;
+    transition: background 0.2s;
+}
+
+.DayCell:hover {
+    background: #111;
+}
+
+.DayNumber {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.DayCell.today .DayNumber {
+    color: #FF0040;
+    background: rgba(255,0,64,0.1);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.DayCell.other-month {
+    background: #050505;
+    opacity: 0.5;
+}
+
+/* --- SESSION ITEMS --- */
+.SessionItem {
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    margin-bottom: 0.3rem;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: transform 0.1s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.SessionItem:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.2);
+}
+
+.SessionItem.Private {
+    background: rgba(255,0,64,0.1);
+    color: #FF80A0; /* Lighter red for text readability */
+    border-left-color: #FF0040;
+}
+
+.SessionItem.Program {
+    background: rgba(0,136,255,0.1);
+    color: #80C0FF;
+    border-left-color: #0088FF;
+}
+
+.SessionTime {
+    font-size: 0.65rem;
+    opacity: 0.8;
+    margin-right: 4px;
+    font-weight: 700;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .ScheduleHeader {
+        padding: 1rem;
+    }
+    .CalendarWrapper {
+        padding: 1rem;
+    }
+    .DayCell {
+        min-height: 80px;
+        padding: 0.4rem;
+    }
+    .SessionItem {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.4rem;
+    }
+}

@@ -19,7 +19,7 @@ $FirstName = explode(' ', $UserName)[0]; // Get just the first name for the head
 
 $UserId = AuthId();
 
-// 1. Fetch User Stats (Latest 2 for trend, All for graph in future)
+// 1. Fetch User Stats (Latest 2 for trend)
 $Stmt = $pdo->prepare("SELECT * FROM userphysicalstats WHERE UserId = ? ORDER BY RecordedAt DESC LIMIT 2");
 $Stmt->execute([$UserId]);
 $StatsHistory = $Stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -31,6 +31,11 @@ $PrevFat = $StatsHistory[1]['BodyFat'] ?? $CurrentFat;
 
 $WeightChange = $CurrentWeight - $PrevWeight; // Negative means loss (good)
 $FatChange = $CurrentFat - $PrevFat;
+
+// 1.5 Fetch User Wallet Balance
+$UserWalletStmt = $pdo->prepare("SELECT WalletPrivateSessions FROM users WHERE id = ?");
+$UserWalletStmt->execute([$UserId]);
+$UserWallet = $UserWalletStmt->fetchColumn() ?: 0;
 
 // 2. Fetch Private Sessions (Confirmed)
 $PrivateStmt = $pdo->prepare("
@@ -66,7 +71,7 @@ usort($ProgramSessions, function ($a, $b) {
 
 // 5. Fetch Active Subscription
 $SubStmt = $pdo->prepare("
-    SELECT s.Status, s.EndDate, m.Name as PlanName 
+    SELECT s.Status, s.EndDate, m.Name as PlanName, s.BalancePrivateSessions -- Ensure we fetch balance
     FROM subscriptions s
     JOIN memberships m ON s.MembershipId = m.id
     WHERE s.UserId = ? AND s.Status = 'Active'
@@ -79,10 +84,12 @@ if ($Subscription) {
     $PlanName = $Subscription['PlanName'] ?? 'No Plan';
     $SubStatus = $Subscription['Status'] ?? 'Inactive';
     $RenewsDate = $Subscription['EndDate'] ? date('M d, Y', strtotime($Subscription['EndDate'])) : 'N/A';
+    $SubBalance = $Subscription['BalancePrivateSessions'] ?? 0;
 } else {
     $PlanName = 'No Plan';
     $SubStatus = 'Inactive';
     $RenewsDate = 'N/A';
+    $SubBalance = 0;
 }
 
 // 6. Simulate Live Occupancy (Peak hours: 17:00 - 20:00)
@@ -108,8 +115,15 @@ if ($Hour >= 17 && $Hour <= 20) {
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/trainee_dashboard.css">
+    <link rel="stylesheet" href="../../css/booking.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
+    <script>
+        // Inject User Credits for JS
+        window.UserCredits = {
+            plan: <?= $SubBalance ?>,
+            wallet: <?= $UserWallet ?>
+        };
+    </script>
 
 <body class="DashboardBody">
 
@@ -146,28 +160,28 @@ if ($Hour >= 17 && $Hour <= 20) {
                             <span class="SubTitle">Tracking Weight & Body Fat</span>
                         </div>
                         <div class="TimeframeToggles">
-                            <button class="ToggleBtn">1M</button>
-                            <button class="ToggleBtn Active">3M</button>
-                            <button class="ToggleBtn">6M</button>
+                            <button class="ToggleBtn" data-range="1m">1M</button>
+                            <button class="ToggleBtn active" data-range="3m">3M</button>
+                            <button class="ToggleBtn" data-range="6m">6M</button>
+                            <button class="ToggleBtn" data-range="all">ALL</button>
                         </div>
                     </div>
 
                     <div class="ChartsContainer">
-                        <!-- Weight Chart Mock -->
+                        <!-- Weight Chart -->
                         <div class="ChartCol">
                             <div class="ChartHeader">
                                 <span class="Label">WEIGHT</span>
-                                <span class="Value"><?= $CurrentWeight ?> <small>kg</small></span>
+                                <span class="Value"><span id="valWeightNow"><?= $CurrentWeight ?></span> <small>kg</small></span>
                             </div>
-                            <!-- Visual representation of a line chart using CSS/SVG placeholder -->
                             <div class="ChartGraphic WeightChart">
                                 <svg viewBox="0 0 100 40" preserveAspectRatio="none">
-                                    <path d="M0,20 Q50,30 100,35" stroke="#FF0055" stroke-width="2" fill="none" />
-                                    <circle cx="100" cy="35" r="2" fill="#FF0055" />
+                                    <path id="pathWeight" d="M0,20 Q50,30 100,35" stroke="#FF0055" stroke-width="2" fill="none" />
                                 </svg>
+                                <div id="dotWeight" class="ChartDot"></div>
                                 <div class="ChartLabels">
                                     <span>START</span>
-                                    <span class="Change <?= $WeightChange <= 0 ? 'negative' : 'positive' ?>">
+                                    <span id="lblWeightChange" class="Change <?= $WeightChange <= 0 ? 'negative' : 'positive' ?>">
                                         <?= $WeightChange > 0 ? '+' : '' ?><?= number_format($WeightChange, 1) ?>KG
                                     </span>
                                     <span>NOW</span>
@@ -175,20 +189,20 @@ if ($Hour >= 17 && $Hour <= 20) {
                             </div>
                         </div>
 
-                        <!-- Body Fat Chart Mock -->
+                        <!-- Body Fat Chart -->
                         <div class="ChartCol">
                             <div class="ChartHeader">
                                 <span class="Label">BODY FAT</span>
-                                <span class="Value"><?= $CurrentFat ?> <small>%</small></span>
+                                <span class="Value"><span id="valFatNow"><?= $CurrentFat ?></span> <small>%</small></span>
                             </div>
                             <div class="ChartGraphic FatChart">
                                 <svg viewBox="0 0 100 40" preserveAspectRatio="none">
-                                    <path d="M0,10 Q50,15 100,25" stroke="#ccc" stroke-width="2" fill="none" />
-                                    <circle cx="100" cy="25" r="2" fill="white" />
+                                    <path id="pathFat" d="M0,10 Q50,15 100,25" stroke="#ccc" stroke-width="2" fill="none" />
                                 </svg>
+                                <div id="dotFat" class="ChartDot"></div>
                                 <div class="ChartLabels">
                                     <span>START</span>
-                                    <span class="Change <?= $FatChange <= 0 ? 'positive' : 'negative' ?>">
+                                    <span id="lblFatChange" class="Change <?= $FatChange <= 0 ? 'positive' : 'negative' ?>">
                                         <?= $FatChange > 0 ? '+' : '' ?><?= number_format($FatChange, 1) ?>%
                                     </span>
                                     <span>NOW</span>
@@ -206,7 +220,7 @@ if ($Hour >= 17 && $Hour <= 20) {
                             <span class="SubTitle">1-on-1 Coaching</span>
                         </div>
                         <div class="HeaderActions">
-                            <a href="#" class="LinkSmall">BOOK NEW</a>
+                            <button onclick="BookingWizard.open()" class="LinkSmall" style="background:none;border:none;cursor:pointer;color:white;">BOOK NEW</button>
                         </div>
                     </div>
 
@@ -221,7 +235,18 @@ if ($Hour >= 17 && $Hour <= 20) {
                                 $DayName = strtoupper($Date->format('D'));
                                 $Time = $Date->format('H:i');
                             ?>
-                                <div class="SessionRow PrivateRow">
+                                <div class="SessionRow PrivateRow" onclick="SessionModal.open(<?= htmlspecialchars(json_encode([
+                                                                                                    "id" => $Session["id"],
+                                                                                                    "Title" => $Session["Title"],
+                                                                                                    "StartTime" => $Session["StartTime"],
+                                                                                                    "DurationMinutes" => $Session["DurationMinutes"],
+                                                                                                    "InstructorName" => $Session["InstructorName"],
+                                                                                                    "Status" => "Confirmed",
+                                                                                                    "Location" => "Private Studio",
+                                                                                                    "Notes" => "",
+                                                                                                    "Category" => "Private Session",
+                                                                                                    "Type" => "Private"
+                                                                                                ]), ENT_QUOTES, 'UTF-8') ?>)">
                                     <div class="DateBox">
                                         <span class="Label"><?= $DayName ?></span>
                                         <span class="Time"><?= $Time ?></span>
@@ -235,7 +260,7 @@ if ($Hour >= 17 && $Hour <= 20) {
                                     </div>
                                     <div class="SessionStatus">
                                         <span class="StatusText text-red"><span class="Dot red"></span> AWAITING CHECK-IN</span>
-                                        <button class="BtnSm">RESCHEDULE</button>
+                                        <button class="BtnSm">DETAILS</button>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -327,9 +352,9 @@ if ($Hour >= 17 && $Hour <= 20) {
                     <div class="ActionContent">
                         <h3>BOOK PRIVATE TRAINING</h3>
                         <p>1-on-1 with elite coaches</p>
-                        <button class="BtnActionRed">BOOK NOW</button>
+                        <button onclick="BookingWizard.open()" class="BtnActionRed">BOOK NOW</button>
                     </div>
-                    <img src="../../imgs/trainer-thumb.png" alt="Trainer" class="ActionImg"> <!-- Placeholder, CSS handles gradient -->
+                    <img src="../../Imgs/private_session_card_bg.png" alt="Trainer" class="ActionImg"> <!-- Placeholder, CSS handles gradient -->
                 </div>
 
                 <!-- Action: Supplements -->
@@ -371,6 +396,190 @@ if ($Hour >= 17 && $Hour <= 20) {
         </div>
     </div>
 
+    <!-- BOOKING MODAL -->
+    <div id="BookingModal" class="ModalOverlay">
+        <div class="WizardContainer">
+            <button id="btnCloseModal" class="BtnCloseModal"><i class="fa-solid fa-xmark"></i></button>
+
+            <div class="WizardHeader">
+                <h1>Book <span class="Highlight">Private Session</span></h1>
+                <p>Maximize your gains with 1-on-1 coaching</p>
+            </div>
+
+            <div class="StepsIndicator">
+                <div class="StepInfo active">
+                    <div class="StepCircle">1</div>
+                    <span class="StepLabel">Trainer</span>
+                </div>
+                <div class="StepInfo">
+                    <div class="StepCircle">2</div>
+                    <span class="StepLabel">Schedule</span>
+                </div>
+                <div class="StepInfo">
+                    <div class="StepCircle">3</div>
+                    <span class="StepLabel">Confirm</span>
+                </div>
+            </div>
+
+            <div class="WizardContent">
+                <!-- STEP 1: TRAINER -->
+                <div class="StepContent active" id="Step1">
+                    <h3 style="margin-bottom: 20px;">Choose your Expert</h3>
+                    <div class="TrainerGrid">
+                        <!-- Dynamic fetch would be better, but hardcoded for now based on DB -->
+                        <?php
+                        $InstrStmt = $pdo->query("SELECT id, CONCAT(FirstName, ' ', LastName) as Name FROM users WHERE Role = 'Instructor'");
+                        while ($Instr = $InstrStmt->fetch(PDO::FETCH_ASSOC)):
+                            $Avatar = "../../imgs/instructor_avatar_" . ($Instr['id'] % 2 == 0 ? 'male' : 'female') . ".png";
+                        ?>
+                            <div class="TrainerCard" data-id="<?= $Instr['id'] ?>" data-name="<?= htmlspecialchars($Instr['Name']) ?>">
+                                <div style="width:60px; height:60px; background:#444; border-radius:50%; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                </div>
+                                <h4 style="margin:0; font-size:1rem;"><?= htmlspecialchars($Instr['Name']) ?></h4>
+                                <span style="font-size:0.8rem; color:#888;">Elite Coach</span>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                </div>
+
+                <!-- STEP 2: SCHEDULE -->
+                <div class="StepContent" id="Step2">
+                    <h3 style="margin-bottom: 5px;">Build your Schedule</h3>
+                    <p style="color:#888; margin-bottom: 20px; font-size:0.9rem;">
+                        Toggle between specific dates or a recurring weekly schedule.
+                    </p>
+
+                    <!-- 1. Segmented Control / Toggle -->
+                    <div class="SegmentedControl">
+                        <div class="SegmentOption active" data-mode="single">Specific Dates</div>
+                        <div class="SegmentOption" data-mode="recurring">Repeat Weekly</div>
+                    </div>
+
+                    <!-- 2. Date Selection Views -->
+                    <div id="dateViewContainer" style="margin-bottom:20px;">
+
+                        <!-- Single Mode: Horizontal Date Strip with Scroll Controls -->
+                        <!-- ADDED ID dateScrollWrapper HERE -->
+                        <div id="dateScrollWrapper" class="DateScrollWrapper">
+                            <button id="btnScrollLeft" class="ScrollBtn"><i class="fa fa-chevron-left"></i></button>
+                            <div id="dateStrip" class="DateStripContainer">
+                                <!-- JS Injected Cards -->
+                            </div>
+                            <button id="btnScrollRight" class="ScrollBtn"><i class="fa fa-chevron-right"></i></button>
+                        </div>
+
+                        <!-- Recurring Mode: Day Grid -->
+                        <div id="dayGrid" class="DayGridContainer" style="display:none;">
+                            <!-- JS Injected Circles -->
+                        </div>
+
+                        <!-- Consistency Warning (Dynamic) -->
+                        <div id="consistencyWarning" class="ConsistencyWarning" style="display:none;">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <div>
+                                <strong>Consistency Check</strong><br>
+                                <span style="opacity:0.9;">Gaps larger than 2 weeks might impact your training consistency.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Inputs -->
+                    <input type="date" id="bookingDate" style="position:absolute; opacity:0; z-index:-1; width:0; height:0;">
+                    <input type="checkbox" id="checkRepeat" style="display:none;">
+
+                    <!-- Weeks Input (Visible only in Recurring) -->
+                    <div id="weeksInputContainer" style="display:none; text-align:center; margin-bottom:20px; background:#1a1a1a; padding:10px; border-radius:12px; border:1px solid #333;">
+                        <label style="color:#888; margin-right:10px;">For how many weeks?</label>
+                        <input type="number" id="inputWeeks" value="4" min="2" max="12" style="background:#333; border:none; color:white; padding:5px 10px; border-radius:6px; width:60px; text-align:center;">
+                    </div>
+
+                    <!-- 3. Time Slots -->
+                    <div>
+                        <div class="TimeSlotGrid" id="timeSlots" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:8px;">
+                            <p style="color:#666; grid-column: span 5; text-align:center; padding:20px;">Select a date to view times.</p>
+                        </div>
+                    </div>
+
+                    <!-- 4. Selected Slots Cart -->
+                    <div id="selectionCart" class="SelectionCart">
+                        <!-- JS Injected Chips -->
+                    </div>
+                </div>
+
+                <!-- STEP 3: CONFIRM -->
+                <div class="StepContent" id="Step3">
+                    <h3 style="margin-bottom: 20px;">Confirmation</h3>
+
+                    <div style="background:#252528; padding:20px; border-radius:16px; margin-bottom:20px;">
+                        <div class="SummaryItem"><span>Coach</span><span class="Highlight" id="summaryTrainer">-</span></div>
+                        <div class="SummaryItem"><span>Schedule</span><span class="Highlight" id="summaryDate">-</span></div>
+                        <div class="SummaryItem"><span>Total Booking</span><span class="Highlight" id="summaryTime">-</span></div>
+                        <div class="SummaryItem"><span>Frequency</span><span class="Highlight" id="summaryRepeat">-</span></div>
+                        <div class="SummaryItem" style="margin-top:15px; padding-top:15px; border-top:1px solid #444;">
+                            <span style="font-size:1.1rem; font-weight:bold;">Credit Status</span>
+                            <div id="creditBalance" style="text-align:right;">Calculating...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GLOBAL WIZARD FOOTER -->
+            <div class="WizardFooter" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #333; display: flex; justify-content: space-between; align-items: center;">
+                <button id="btnBack" class="BtnSm" style="display:none; background:transparent; border:1px solid #555; color:#aaa;">BACK</button>
+                <div style="flex-grow:1;"></div>
+                <button id="btnNext" class="BtnActionRed" disabled>NEXT STEP</button>
+                <button id="btnConfirm" class="BtnActionRed" style="display:none;">CONFIRM BOOKING</button>
+            </div>
+        </div>
+    </div>
+    <!-- SESSION DETAILS MODAL -->
+    <div id="SessionDetailsModal" class="ModalOverlay">
+        <div class="ModalBox">
+            <button class="BtnCloseModal" onclick="SessionModal.close()"><i class="fa-solid fa-xmark"></i></button>
+
+            <div class="ModalHeader">
+                <span class="ModalTag" id="modalSessionType">PRIVATE SESSION</span>
+                <h2 id="modalSessionTitle">Power Lifting</h2>
+                <p id="modalSessionMeta"><i class="fa-regular fa-clock"></i> <span id="modalSessionTime">09:00 - 10:00</span> &bull; <span id="modalSessionDate">Mon, Oct 24</span></p>
+            </div>
+
+            <div class="ModalBody">
+                <div class="DetailBlock">
+                    <label>INSTRUCTOR</label>
+                    <div class="InstructorRow">
+                        <div class="AvatarSmall" id="modalInstructorAvatar"><i class="fa-solid fa-user"></i></div>
+                        <div>
+                            <strong id="modalInstructorName">Coach Sarah</strong>
+                            <span class="SubText">Elite Trainer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="DetailBlock">
+                    <label>LOCATION</label>
+                    <p id="modalLocation"><i class="fa-solid fa-location-dot"></i> Zone 4 (Free Weights)</p>
+                </div>
+
+                <div class="DetailBlock">
+                    <label>NOTES</label>
+                    <p id="modalNotes" class="NotesText">Focus on deadlift form and grip strength.</p>
+                </div>
+
+                <div class="ActionButtons">
+                    <button class="BtnOutline" onclick="SessionModal.cancelSession()">CANCEL SESSION</button>
+                    <!-- Reschedule to be implemented later -->
+                    <!-- <button class="BtnPrimary" onclick="SessionModal.reschedule()">RESCHEDULE</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <!-- END DashboardWrapper -->
+
+    <script src="../../js/booking.js"></script>
+    <script src="../../js/dashboard_charts.js"></script>
 </body>
 
 </html>

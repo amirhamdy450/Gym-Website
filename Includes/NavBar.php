@@ -27,7 +27,7 @@ $Prefix = $Prefix ?? ''; // Path prefix for subdirectories
         <ul class="NavLinks">
             <li><a href="<?= $Prefix ?>index.php#programs">Programs</a></li>
             <li><a href="<?= $Prefix ?>index.php#memberships">Memberships</a></li>
-            <li><a href="<?= $Prefix ?>index.php#community">Community</a></li>
+            <li><a href="<?= $Prefix ?>Pages/Trainee/Schedule.php">Schedule</a></li>
             <li><a href="<?= $Prefix ?>Shop.php">Shop</a></li>
         </ul>
 

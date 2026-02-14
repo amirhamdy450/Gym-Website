@@ -201,6 +201,20 @@ body.DashboardBody {
 .Change.negative { color: #FF0055; }
 .Change.positive { color: #00FF88; }
 
+.ChartDot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white; /* Default, overridden by ID/specific helper */
+    transform: translate(-50%, -50%); /* Center on coordinate */
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+#dotWeight { background: #FF0055; box-shadow: 0 0 10px rgba(255, 0, 85, 0.4); }
+#dotFat { background: white; box-shadow: 0 0 10px rgba(255, 255, 255, 0.4); }
+
 /* --- SESSIONS CARD --- */
 .HeaderActions {
     display: flex;
@@ -409,48 +423,67 @@ body.DashboardBody {
 }
 
 .LargeAction {
-    background: linear-gradient(to right, #252528 40%, rgba(37, 37, 40, 0) 100%), 
-                url('../imgs/trainer-bg.jpg'); /* Need placeholder */
-    background-size: cover;
-    min-height: 180px;
+    /* Remove old background logic */
+    position: relative;
+    min-height: 200px;
     display: flex;
     align-items: center;
-}
-
-.SmallAction {
-    background: linear-gradient(135deg, #1A3A35 0%, #111 100%); /* Greenish tint for supplements */
+    overflow: hidden; /* Ensure image doesn't spill out */
 }
 
 .ActionContent {
     position: relative;
     z-index: 2;
-    max-width: 70%;
+    max-width: 60%; /* Limit text width so it doesn't overlap the main part of the image */
+}
+
+.ActionImg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 60%; /* Cover right side */
+    object-fit: cover;
+    z-index: 1;
+    mask-image: linear-gradient(to left, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to left, black 60%, transparent 100%);
 }
 
 .ActionContent h3 {
     font-style: italic;
     font-weight: 900;
-    font-size: 1.1rem;
-    margin-bottom: 0.3rem;
+    font-size: 1.5rem; /* Bigger for impact */
+    margin-bottom: 0.5rem;
     text-transform: uppercase;
-    line-height: 1.1;
+    line-height: 1;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
 .ActionContent p {
-    font-size: 0.8rem;
-    color: #aaa;
-    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #ddd;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
 .BtnActionRed {
+    display: inline-block; /* Essential for <a> tags */
     background: #FF0040;
     border: none;
     color: white;
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px; /* Pillow shape matching main theme */
     font-weight: 800;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     cursor: pointer;
+    text-decoration: none; /* Rmove underline from <a> */
+    box-shadow: 0 4px 15px rgba(255, 0, 64, 0.4);
+    transition: transform 0.2s;
+}
+
+.BtnActionRed:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 0, 64, 0.6);
 }
 
 /* Occupancy Widget */
@@ -525,7 +558,155 @@ body.DashboardBody {
         grid-template-columns: 1fr 1fr;
     }
 }
-@media (max-width: 768px) {
+
+/* --- SESSION DETAILS MODAL --- */
+.ModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.ModalOverlay.active {
+    opacity: 1;
+}
+
+.ModalBox {
+    background: #1C1C1E;
+    padding: 2rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.BtnCloseModal {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.BtnCloseModal:hover { color: white; }
+
+.ModalHeader {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.ModalTag {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #FF0040;
+    letter-spacing: 1px;
+    background: rgba(255,0,64,0.1);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 0.8rem;
+}
+
+.ModalHeader h2 {
+    font-size: 1.8rem;
+    margin: 0 0 0.5rem 0;
+    color: white;
+}
+
+.ModalHeader p {
+    color: #888;
+    font-size: 0.95rem;
+}
+
+.DetailBlock {
+    margin-bottom: 1.5rem;
+}
+
+.DetailBlock label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #666;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.InstructorRow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255,255,255,0.03);
+    padding: 0.8rem;
+    border-radius: 12px;
+}
+
+.AvatarSmall {
+    width: 40px;
+    height: 40px;
+    background: #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 1rem;
+}
+
+.SubText {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.NotesText {
+    background: rgba(255,255,255,0.03);
+    padding: 1rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    color: #ccc;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.ActionButtons {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.BtnOutline {
+    background: transparent;
+    border: 1px solid #FF0040;
+    color: #FF0040;
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.BtnOutline:hover {
+    background: rgba(255,0,64,0.1);
+}@media (max-width: 768px) {
     .SideCol {
         grid-template-columns: 1fr;
     }
